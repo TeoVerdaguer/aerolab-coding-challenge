@@ -1,5 +1,13 @@
 {
   "/_app": "pages/_app.js",
+  "/api/hello": "pages/api/hello.js",
+  "/footer": "pages/footer.html",
+  "/": "pages/index.html",
+  "/nav": "pages/nav.html",
+  "/product": "pages/product.html",
+  "/products": "pages/products.html",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/walkthrough": "pages/walkthrough.html",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
 }

@@ -1,0 +1,112 @@
+/* Nav bar */
+
+/* Auto layout */
+.navBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 0px;
+  width: 1464px;
+
+  position: absolute;
+  height: 128px;
+  left: 228px;
+  right: 228px;
+  top: 0px;
+  z-index: 2;
+  background: #FFFFFF;
+}
+
+.aeroPayDropDownBtn {
+/* AeroCoins */
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+position: static;
+width: 172px;
+height: 48px;
+left: 1292px;
+top: 40px;
+
+/* Neutrals/0 */
+background: #FFFFFF;
+/* Neutrals/300 */
+border: 1px solid #DAE4F2;
+box-sizing: border-box;
+/* Elevation 1/Hover & active */
+
+box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
+border-radius: 16px;
+
+/* Inside auto layout */
+
+flex: none;
+flex-grow: 0;
+transition: all .2s ease;
+}
+
+.aeroPayDropDownBtn:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.aeroLabIcon {
+  /* Icons */
+  position: static;
+  left: 0%;
+  right: 61.9%;
+  top: 0%;
+  bottom: 0%;
+
+  /* Brand/Default */
+  background: linear-gradient(102.47deg, #176FEB -5.34%, #FF80FF 106.58%);
+  border-radius: 40px;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 8px;
+}
+
+.coinAmount {
+  /* Coin Amount */
+  position: static;
+  width: 60px;
+  height: 27px;
+  left: 40px;
+  top: 2.5px;
+
+  /* Desktop/Text/L1/Default| */
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 150%;
+  /* identical to box height, or 27px */
+
+  /* Brand/Default */
+  background: linear-gradient(102.47deg, #176FEB -5.34%, #FF80FF 106.58%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 8px;
+}
+
+.dropDownArrow {
+  /* Neutrals/500 */
+  transform: rotate(-90deg);
+  display: flex;
+  order: 2;
+  }

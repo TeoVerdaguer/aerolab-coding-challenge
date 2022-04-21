@@ -17,10 +17,10 @@ export default function Walkthrough() {
                         <div className={styles.titleAndIcon}>
                             <div className={styles.iconWrapper}>
                                 <img
-                                    class={styles.cardIcon}
+                                    className={styles.cardIcon}
                                     src="/icons/walkthrough-1.svg"
                                     alt=""
-                                    srcset=""
+                                    srcSet=""
                                 />
                             </div>
                             <h2 className={styles.cardTitle}>1—browse</h2>
@@ -44,10 +44,10 @@ export default function Walkthrough() {
                         <div className={styles.titleAndIcon}>
                             <div className={styles.iconWrapper}>
                                 <img
-                                    class={styles.cardIcon}
+                                    className={styles.cardIcon}
                                     src="/icons/walkthrough-2.svg"
                                     alt=""
-                                    srcset=""
+                                    srcSet=""
                                 />
                             </div>
                             <h2 className={styles.cardTitle}>2—choose</h2>
@@ -71,10 +71,10 @@ export default function Walkthrough() {
                         <div className={styles.titleAndIcon}>
                             <div className={styles.iconWrapper}>
                                 <img
-                                    class={styles.cardIcon}
+                                    className={styles.cardIcon}
                                     src="/icons/walkthrough-3.svg"
                                     alt=""
-                                    srcset=""
+                                    srcSet=""
                                 />
                             </div>
                             <h2 className={styles.cardTitle}>3—enjoy!</h2>

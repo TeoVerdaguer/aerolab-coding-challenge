@@ -2,7 +2,8 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Nav from './nav'
 import Walkthrough from './walkthrough'
-
+import Products from './products'
+import Footer from './footer'
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.svg" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com"></link>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin></link>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin></link>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;900&display=swap" rel="stylesheet"></link>
       </Head>
 
@@ -31,6 +32,8 @@ export default function Home() {
         </button>
       </div>
       <Walkthrough />
+      <Products />
+      <Footer />
     </div>
   )
 }

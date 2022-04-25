@@ -1,5 +1,5 @@
-import styles from "../styles/Products.module.css";
-import Product from "./product";
+import styles from "../styles/Products.module.css"
+import Product from "./product"
 
 export default function Products() {
   return (
@@ -31,11 +31,11 @@ export default function Products() {
           </div>
           <div className={styles.pager}>
             <div className={styles.pagerArrowPrevBtn}>
-              <img className={styles.pagerArrowPrev} src="/icons/chevron-default.svg" alt="" srcSet="arrow pointing left" />
+              <img className={styles.pagerArrowPrev} src="/icons/chevron-default.svg" alt="arrow pointing left" />
             </div>
             <p className={styles.pagerText}>Page 1 of 2</p>
             <div className={styles.pagerArrowNextBtn}>
-              <img className={styles.pagerArrowNext} src="/icons/chevron-default.svg" alt="" srcSet="arrow pointing right" />
+              <img className={styles.pagerArrowNext} src="/icons/chevron-default.svg" alt="arrow pointing right" />
             </div>
           </div>
         </div>
@@ -48,11 +48,11 @@ export default function Products() {
         {/* Pager */}
         <div className={styles.pager}>
             <div className={styles.pagerArrowPrevBtn}>
-              <img className={styles.pagerArrowPrev} src="/icons/chevron-default.svg" alt="" srcSet="arrow pointing left" />
+              <img className={styles.pagerArrowPrev} src="/icons/chevron-default.svg" alt="arrow pointing left" />
             </div>
             <p className={styles.pagerText}>Page 1 of 2</p>
             <div className={styles.pagerArrowNextBtn}>
-              <img className={styles.pagerArrowNext} src="/icons/chevron-default.svg" alt="" srcSet="arrow pointing right" />
+              <img className={styles.pagerArrowNext} src="/icons/chevron-default.svg" alt="arrow pointing right" />
             </div>
           </div>
       </div>

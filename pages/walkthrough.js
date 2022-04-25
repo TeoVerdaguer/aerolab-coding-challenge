@@ -20,7 +20,6 @@ export default function Walkthrough() {
                                     className={styles.cardIcon}
                                     src="/icons/walkthrough-1.svg"
                                     alt=""
-                                    srcSet=""
                                 />
                             </div>
                             <h2 className={styles.cardTitle}>1—browse</h2>
@@ -47,7 +46,6 @@ export default function Walkthrough() {
                                     className={styles.cardIcon}
                                     src="/icons/walkthrough-2.svg"
                                     alt=""
-                                    srcSet=""
                                 />
                             </div>
                             <h2 className={styles.cardTitle}>2—choose</h2>
@@ -74,7 +72,6 @@ export default function Walkthrough() {
                                     className={styles.cardIcon}
                                     src="/icons/walkthrough-3.svg"
                                     alt=""
-                                    srcSet=""
                                 />
                             </div>
                             <h2 className={styles.cardTitle}>3—enjoy!</h2>

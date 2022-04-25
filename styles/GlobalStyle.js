@@ -32,6 +32,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
   }
 
   /* Texts */
@@ -119,7 +120,7 @@ export const GlobalStyle = createGlobalStyle`
     &:hover {
       background: var(--brandHover);
       box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
-      border-radius: 24px;
+      cursor: pointer;
     }
     p {
       font-family: 'Montserrat', sans-serif;
@@ -132,4 +133,53 @@ export const GlobalStyle = createGlobalStyle`
       height: 27px;
     }
   }
+
+  .aeroPayDropDownBtn {
+    /* AeroCoins */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    width: 172px;
+    height: 48px;
+    background: var(--neutrals0);
+    border: 1px solid var(--neutrals300);
+    box-sizing: border-box;
+    box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    transition: all 0.2s ease;
+    /* Aerolab icon */
+    img:nth-child(1) {
+      background: var(--brandDefault);
+      border-radius: 40px;
+      margin: 0 8px;
+    }
+    p {
+      /* Desktop/Text/L1/Default| */
+      font-family: "Montserrat";
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 150%;
+      background: var(--brandDefault);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    img:nth-child(3) {
+      display: flex;
+      order: 2;
+      margin: 0 16px;
+      transform: rotate(90deg);
+      transition: all 0.5s ease;
+    }
+    .rotateArrow {
+      transform: rotate(270deg) !important;
+    }
+    &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+}
+
 `;

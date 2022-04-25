@@ -13,15 +13,24 @@ const StyledHome = styled.div`
     height: 1364px;
     background-image: url("/illustrations/single-wave-pattern2.svg");
     background-repeat: repeat;
-    margin-top: 200px;
+  }
+
+  .mainContainer {
+    position: absolute;
+    height: 920px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding: 240px 228px;
+    display: flex;
+    justify-content: space-between;
   }
 
   .illustrationBg {
-    position: absolute;
+    display: flex;
     width: 722px;
     height: 600px;
-    left: 970px;
-    top: 240px;
+    order: 2;
     background: linear-gradient(
       102.47deg,
       rgba(23, 111, 235, 0.5) -5.34%,
@@ -32,17 +41,14 @@ const StyledHome = styled.div`
   }
 
   .heroIllustration {
+    position: absolute;
+    bottom: 80px;
+    right: 150px;
     width: 897px;
     height: 820px;
-    position: absolute;
-    left: -12%;
-    bottom: 0%;
   }
 
   .landingCopyContainer {
-    position: absolute;
-    top: 240px;
-    left: 228px;
     width: 602px;
     height: 577px;
     .textL1AllCaps {
@@ -62,7 +68,6 @@ const StyledHome = styled.div`
       color: var(--neutrals600);
     }
     .landingCTA {
-
     }
   }
 `;
@@ -88,29 +93,29 @@ export default function Home() {
       </Head>
 
       <div className="wavesContainer"></div>
-      <div className="illustrationBg">
-        <img
-          className="heroIllustration"
-          src="/illustrations/hero-desktop.png"
-          alt="character with VR headset"
-        />
+      <div className="mainContainer">
+        <div className="illustrationBg">
+          <img
+            className="heroIllustration"
+            src="/illustrations/hero-desktop.png"
+            alt="character with VR headset"
+          />
+        </div>
+
+        <div className="landingCopyContainer">
+          <p className="textL1AllCaps">explore the</p>
+          <h1 className="titleL1">tech zone</h1>
+          <p className="textL1Default">
+            Here you’ll be able to exchange all of your hard-earned Aeropoints
+            and exchange them for cool tech.
+          </p>
+          <button className="landingCTA">
+            <p>VIEW ALL PRODUCTS</p>
+            <img src="/icons/arrow-icon.svg" alt="arrow down icon" />
+          </button>
+        </div>
       </div>
 
-      <div className="landingCopyContainer">
-        <p className="textL1AllCaps">explore the</p>
-        <h1 className="titleL1">tech zone</h1>
-        <p className="textL1Default">
-          Here you’ll be able to exchange all of your hard-earned Aeropoints and
-          exchange them for cool tech.
-        </p>
-        <button className="landingCTA">
-          <p>VIEW ALL PRODUCTS</p>
-          <img
-            src="/icons/arrow-icon.svg"
-            alt="arrow down icon"
-          />
-        </button>
-      </div>
       <Walkthrough />
       <Products />
       <Footer />

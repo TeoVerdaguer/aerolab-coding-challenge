@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const StyledNav = styled.div`
   display: flex;
@@ -64,6 +65,9 @@ const AeropayModule = styled.div`
         height: 24px;
         order: 1;
         background-image: url("/icons/cross-default.svg");
+        &:hover{
+          cursor: pointer;
+        }
       }
     }
   }
@@ -201,8 +205,13 @@ const AeropayModule = styled.div`
           background: #e6f0ff;
           border-radius: 12px;
           flex-grow: 1;
+          z-index: 3;
           &:nth-of-type(2) {
             margin: 0 4px;
+          }
+          &:hover {
+            cursor: pointer;
+            box-shadow: 0 0 11px rgba(33,33,33,.2); 
           }
         }
         .selectorsText {
@@ -271,36 +280,46 @@ const AeropayModule = styled.div`
   }
 `;
 
-// Get user data from the API
-var XMLHttpRequest = require("xhr2");
-var request = new XMLHttpRequest();
-
-request.open("GET", "https://coding-challenge-api.aerolab.co/user/me");
-
-request.setRequestHeader("Content-Type", "application/json");
-request.setRequestHeader("Accept", "application/json");
-request.setRequestHeader(
-  "Authorization",
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk"
-);
-
-request.onreadystatechange = function () {
-  if (this.readyState === 4) {
-    console.log("Status:", this.status);
-    console.log("Headers:", this.getAllResponseHeaders());
-    console.log("Body:", this.responseText);
-
-    let response = JSON.parse(this.responseText);
-  }
-};
-
-request.send();
-
 export default function Nav() {
+
+  const url = "https://coding-challenge-api.aerolab.co/user/me";
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk",
+    },
+  };
+  // Get user data from API
+  useEffect(() => {
+    axios
+      .get(url, config)
+      .then((data) => {
+        console.log(data.data);
+        setUserName(data.data.name);
+        setUserPoints(data.data.points);
+        setCardDate(getDate(data.data.createDate));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   // States
   const [userName, setUserName] = useState("");
+  const [userPoints, setUserPoints] = useState("");
+  const [cardDate, setCardDate] = useState("");
   const [showAeroPay, setShowAeroPay] = useState(false);
 
+  function getDate(date) {
+    let splittedDate = date.split("-");
+    let year = splittedDate[0].slice(-2);
+    let month = splittedDate[1];
+    let newDate = year + "/" + month;
+    console.log(newDate);
+    return newDate;
+  }
   return (
     <div>
       <StyledNav>
@@ -312,7 +331,7 @@ export default function Nav() {
           onClick={() => setShowAeroPay(!showAeroPay)}
         >
           <img src="/icons/aeropay-1.svg" width="32px" height="32px"></img>
-          <p>10.000</p>
+          <p>{userPoints}</p>
           <img
             className={`${showAeroPay ? "rotateArrow" : ""}`}
             src="/icons/chevron-default.svg"
@@ -326,7 +345,7 @@ export default function Nav() {
         <div className="header">
           <div className="titleAndIcon">
             <h4 className="title">Add Balance</h4>
-            <div className="icon"></div>
+            <div className="icon" onClick={() => setShowAeroPay(!showAeroPay)}></div>
           </div>
         </div>
 
@@ -344,8 +363,8 @@ export default function Nav() {
                   />
                 </div>
                 <div className="nameAndDate">
-                  <p className="userName">John Kite</p>
-                  <p className="cardDate">07/23</p>
+                  {userName && <p className="userName">{userName}</p>}
+                  <p className="cardDate">{cardDate}</p>
                 </div>
                 <div className="wavePatternMask"></div>
               </div>

@@ -80,6 +80,7 @@ const StyledProducts = styled.div`
           margin: 8px 0px;
           &:hover {
             cursor: pointer;
+            box-shadow: 0 0 11px rgba(33,33,33,.2); 
           }
           p {
             position: static;
@@ -194,6 +195,7 @@ const StyledProducts = styled.div`
           margin: 0px 5px;
           &:hover {
             cursor: pointer;
+            box-shadow: 0 0 11px rgba(33,33,33,.2); 
           }
           p {
             height: 27px;

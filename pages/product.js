@@ -109,7 +109,7 @@ export default function Product({ currentProducts }) {
 
   return (
     <StyledProduct>
-      {currentProducts.map((product) => (
+      {currentProducts ? currentProducts.map((product) => (
       <div className="productContainer" key={product._id}>
         <div className="productCard">
           <div className="imgContainer">
@@ -134,7 +134,7 @@ export default function Product({ currentProducts }) {
           <p className="CTAText">{product.cost}</p>
         </div>
       </div>
-      ))}
+      )) : null}
     </StyledProduct>
   );
 }

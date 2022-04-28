@@ -362,7 +362,6 @@ export default function Products({ productsSection }) {
     }
   }, [currentPage])
 
-  // Pager logic
   let lastPage = 0;
   let productsPerPage = 0;
   let totalProducts = 0;
@@ -370,6 +369,7 @@ export default function Products({ productsSection }) {
   let indexOfLastProduct;
   let indexOfFirstProduct;
 
+  // Pager logic
   function paginate(n) {
 
     if ( pagesNumber.includes(n) ) {

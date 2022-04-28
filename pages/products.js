@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Product from "./product";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const StyledProducts = styled.div`
   display: flex;
@@ -80,7 +81,7 @@ const StyledProducts = styled.div`
           margin: 8px 0px;
           &:hover {
             cursor: pointer;
-            box-shadow: 0 0 11px rgba(33,33,33,.2); 
+            box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
           }
           p {
             position: static;
@@ -195,7 +196,7 @@ const StyledProducts = styled.div`
           margin: 0px 5px;
           &:hover {
             cursor: pointer;
-            box-shadow: 0 0 11px rgba(33,33,33,.2); 
+            box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
           }
           p {
             height: 27px;
@@ -246,73 +247,162 @@ const StyledProducts = styled.div`
     }
   }
   .pager {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px;
+    width: 259px;
+    height: 64px;
+    border: 1px solid var(--neutrals300);
+    box-sizing: border-box;
+    border-radius: 16px;
+    .pagerArrowPrevBtn {
       display: flex;
       flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      padding: 12px 16px;
-      width: 259px;
-      height: 64px;
-      border: 1px solid var(--neutrals300);
-      box-sizing: border-box;
-      border-radius: 16px;
-      .pagerArrowPrevBtn {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        padding: 8px;
-        width: 40px;
-        height: 40px;
+      align-items: flex-start;
+      padding: 8px;
+      width: 40px;
+      height: 40px;
+      background: var(--brandLight);
+      border-radius: 8px;
+      transform: rotate(-180deg);
+      &:hover {
+        cursor: pointer;
+        background-color: var(--brandLight2);
+      }
+      .pagerArrowPrev {
+        border: none;
+      }
+      &.inactive {
         background: var(--neutrals200);
-        border-radius: 8px;
-        transform: rotate(-180deg);
-        &:hover {
-          cursor: pointer;
-          background-color: var(--brandLight2);
-        }
+        pointer-events: none;
         .pagerArrowPrev {
-          border: none;
-        }
-      }
-      .pagerText {
-        width: 99px;
-        height: 27px;
-        /* Desktop/Text/L1/Default| */
-        font-family: "Montserrat";
-        font-style: normal;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 150%;
-        color: var(--neutrals600);
-        margin: 0px 20px;
-      }
-      .pagerArrowNextBtn {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        padding: 8px;
-        width: 40px;
-        height: 40px;
-        background: var(--neutrals200);
-        border-radius: 8px;
-        &:hover {
-          cursor: pointer;
-          background-color: var(--brandLight2);
-        }
-        .pagerArrowNext {
-          border: none;
+          opacity: 0.5;
         }
       }
     }
+    .pagerText {
+      height: 27px;
+      /* Desktop/Text/L1/Default| */
+      font-family: "Montserrat";
+      font-style: normal;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 150%;
+      color: var(--neutrals600);
+      margin: 0px 20px;
+    }
+    .pagerArrowNextBtn {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 8px;
+      width: 40px;
+      height: 40px;
+      background: var(--brandLight);
+      border-radius: 8px;
+      &:hover {
+        cursor: pointer;
+        background-color: var(--brandLight2);
+      }
+      .pagerArrowNext {
+        border: none;
+      }
+      &.inactive {
+        background: var(--neutrals200);
+        pointer-events: none;
+        .pagerArrowNext {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
 `;
 
-export default function Products() {
+const authToken =
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk";
+
+export default function Products({ productsSection }) {
+  // States
+  const [isLoading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeFilter, setActiveFilter] = useState(false);
+  const [productsList, setProductsList] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentProducts, setCurrentProducts] = useState([]);
 
+  // GET products from API
+  const getProductsUrl = "https://coding-challenge-api.aerolab.co/products";
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: authToken,
+    },
+  };
+
+  useEffect(() => {
+    axios
+      .get(getProductsUrl, config)
+      .then((data) => {
+        setProductsList(data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (productsList) {
+      indexOfLastProduct = currentPage * productsPerPage;
+      indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+      setCurrentProducts(productsList.slice(indexOfFirstProduct, indexOfLastProduct));
+    }
+  }, [currentPage])
+
+  // Pager logic
+  let lastPage = 0;
+  let productsPerPage = 0;
+  let totalProducts = 0;
+  let pagesNumber = [];
+  let indexOfLastProduct;
+  let indexOfFirstProduct;
+
+  function paginate(n) {
+
+    if ( pagesNumber.includes(n) ) {
+      setCurrentPage(n);
+    }
+  }
+
+  if (!isLoading) {
+    totalProducts = productsList.length;
+    productsPerPage = 16;
+
+    // Set products in current page
+    indexOfLastProduct = currentPage * productsPerPage;
+    indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    if (currentProducts.length === 0) {
+      setCurrentProducts(productsList.slice(indexOfFirstProduct, indexOfLastProduct));
+    }
+
+    // Set number of pages
+    for (let i = 1; i <= Math.ceil(totalProducts / productsPerPage); i++) {
+      pagesNumber.push(i);
+    }
+    lastPage = pagesNumber[1];
+  }
+
+  // Show loading message
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
   return (
+    
     <StyledProducts>
-      <div className="titleAndControls">
+      <div className="titleAndControls" ref={productsSection}>
         <h2 className="titleL2">tech products</h2>
         <div className="filterAndSort">
           <div className="frame228">
@@ -375,45 +465,49 @@ export default function Products() {
             </div>
           </div>
           <div className="pager">
-            <div className="pagerArrowPrevBtn">
+            <div className={`pagerArrowPrevBtn ${currentPage === 1 ? 'inactive' : ''}`}>
               <img
                 className="pagerArrowPrev"
                 src="/icons/chevron-default.svg"
                 alt="arrow pointing left"
+                onClick={() => paginate(currentPage - 1)}
               />
             </div>
-            <p className="pagerText">Page 1 of 2</p>
-            <div className="pagerArrowNextBtn">
+            <p className="pagerText">{`Page ${currentPage} of ${lastPage}`}</p>
+            <div className={`pagerArrowNextBtn ${currentPage === lastPage ? 'inactive' : ''}`}>
               <img
                 className="pagerArrowNext"
                 src="/icons/chevron-default.svg"
                 alt="arrow pointing right"
+                onClick={() => paginate(currentPage + 1)}
               />
             </div>
           </div>
         </div>
       </div>
       <div className="productsGrid">
-        <Product />
+        { currentProducts.length > 0 ? <Product currentProducts={currentProducts}/> : null}
       </div>
       <div className="numberProductsAndPager">
         <div className="emptyDiv"></div>
-        <p className="numberOfProducts">16 of 32 products</p>
+        <p className="numberOfProducts">{`${productsPerPage} of ${totalProducts} products`}</p>
         {/* Pager */}
         <div className="pager">
-          <div className="pagerArrowPrevBtn">
+          <div className={`pagerArrowPrevBtn ${currentPage === 1 ? 'inactive' : ''}`}>
             <img
               className="pagerArrowPrev"
               src="/icons/chevron-default.svg"
               alt="arrow pointing left"
+              onClick={() => paginate(currentPage - 1)}
             />
           </div>
-          <p className="pagerText">Page 1 of 2</p>
-          <div className="pagerArrowNextBtn">
+          <p className="pagerText">{`Page ${currentPage} of ${lastPage}`}</p>
+          <div className={`pagerArrowNextBtn ${currentPage === lastPage ? 'inactive' : ''}`}>
             <img
               className="pagerArrowNext"
               src="/icons/chevron-default.svg"
               alt="arrow pointing right"
+              onClick={() => paginate(currentPage + 1)}
             />
           </div>
         </div>

@@ -65,7 +65,7 @@ const AeropayModule = styled.div`
         height: 24px;
         order: 1;
         background-image: url("/icons/cross-default.svg");
-        &:hover{
+        &:hover {
           cursor: pointer;
         }
       }
@@ -211,7 +211,7 @@ const AeropayModule = styled.div`
           }
           &:hover {
             cursor: pointer;
-            box-shadow: 0 0 11px rgba(33,33,33,.2); 
+            box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
           }
         }
         .selectorsText {
@@ -280,23 +280,24 @@ const AeropayModule = styled.div`
   }
 `;
 
-export default function Nav() {
+const authToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk';
 
+export default function Nav() {
   const url = "https://coding-challenge-api.aerolab.co/user/me";
   const config = {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk",
+      Authorization: authToken,
     },
   };
-  // Get user data from API
+  // GET user data from API
+  
   useEffect(() => {
     axios
       .get(url, config)
       .then((data) => {
-        console.log(data.data);
+        // console.log(data.data);
         setUserName(data.data.name);
         setUserPoints(data.data.points);
         setCardDate(getDate(data.data.createDate));
@@ -306,18 +307,44 @@ export default function Nav() {
       });
   }, []);
 
+  // ______________________________________________
+
+  function addPoints(points) {
+    console.log(points);
+
+    const urlPoints = "https://coding-challenge-api.aerolab.co/user/points";
+    const data = `"amount": ${points}`;
+    const configPoints = {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: authToken,
+        'Access-Control-Allow-Origin': '*',
+      }
+    };
+    // POST user points
+    axios
+      .post(urlPoints, data, configPoints)
+      .then((status) => {
+        console.log(status);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   // States
   const [userName, setUserName] = useState("");
   const [userPoints, setUserPoints] = useState("");
   const [cardDate, setCardDate] = useState("");
   const [showAeroPay, setShowAeroPay] = useState(false);
+  const [points, setPoints] = useState(0);
 
   function getDate(date) {
     let splittedDate = date.split("-");
     let year = splittedDate[0].slice(-2);
     let month = splittedDate[1];
     let newDate = year + "/" + month;
-    console.log(newDate);
     return newDate;
   }
   return (
@@ -345,7 +372,10 @@ export default function Nav() {
         <div className="header">
           <div className="titleAndIcon">
             <h4 className="title">Add Balance</h4>
-            <div className="icon" onClick={() => setShowAeroPay(!showAeroPay)}></div>
+            <div
+              className="icon"
+              onClick={() => setShowAeroPay(!showAeroPay)}
+            ></div>
           </div>
         </div>
 
@@ -372,18 +402,18 @@ export default function Nav() {
             {/* Amounts and CTA */}
             <div className="amountAndCTA">
               <div className="amounts">
-                <div className="selectors">
+                <div className="selectors" onClick={() => setPoints(1000)}>
                   <p className="selectorsText">1000</p>
                 </div>
-                <div className="selectors">
+                <div className="selectors" onClick={() => setPoints(5000)}>
                   <p className="selectorsText">5000</p>
                 </div>
-                <div className="selectors">
+                <div className="selectors" onClick={() => setPoints(7500)}>
                   <p className="selectorsText">7500</p>
                 </div>
               </div>
 
-              <button className="CTA">
+              <button className="CTA" onClick={() => addPoints(points)}>
                 <img
                   className="CTAIcon"
                   src="/icons/aeropay-3.svg"

@@ -4,6 +4,7 @@ import Nav from "./nav";
 import Walkthrough from "./walkthrough";
 import Products from "./products";
 import Footer from "./footer";
+import { useRef } from "react";
 
 const StyledHome = styled.div`
   padding-top: 201px;
@@ -72,7 +73,15 @@ const StyledHome = styled.div`
   }
 `;
 
+
 export default function Home() {
+
+const productsSection = useRef(null);
+
+function scrollToProducts () {
+  window.scrollTo({top: productsSection.current.offsetTop, behavior: "smooth"})
+}
+
   return (
     <StyledHome>
       <Nav />
@@ -109,7 +118,7 @@ export default function Home() {
             Here you’ll be able to exchange all of your hard-earned Aeropoints
             and exchange them for cool tech.
           </p>
-          <button className="landingCTA">
+          <button className="landingCTA" onClick={() => scrollToProducts()}>
             <p>VIEW ALL PRODUCTS</p>
             <img src="/icons/arrow-icon.svg" alt="arrow down icon" />
           </button>
@@ -117,7 +126,7 @@ export default function Home() {
       </div>
 
       <Walkthrough />
-      <Products />
+      <Products productsSection={productsSection}/>
       <Footer />
     </StyledHome>
   );

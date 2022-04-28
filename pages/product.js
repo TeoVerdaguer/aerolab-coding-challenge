@@ -88,7 +88,6 @@ const StyledProduct = styled.div`
       border-radius: 16px;
       margin: 16px 12px;
       .CTAText {
-        width: 87px;
         height: 27px;
         /* Desktop/Text/L1/Default| */
         font-family: "Montserrat";
@@ -106,411 +105,36 @@ const StyledProduct = styled.div`
   }
 `;
 
-export default function Product() {
+export default function Product({ currentProducts }) {
+
   return (
     <StyledProduct>
-      <div className="productContainer">
+      {currentProducts.map((product) => (
+      <div className="productContainer" key={product._id}>
         <div className="productCard">
           <div className="imgContainer">
             <img
               className="productImage"
-              src="/nikon.png"
+              src={product.img.url}
               alt="product image"
             />
           </div>
           <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
+            <h3 className="productName">{product.name}</h3>
+            <p className="productType">{product.category}</p>
           </div>
         </div>
         <div className="productCTA">
-          <p className="CTAText">You need</p>
+          <p className="CTAText">Redeem for</p>
           <img
             className="aeroPayIcon"
             src="/icons/aeropay-4.svg"
             alt="aero pay icon"
           />
-          <p className="CTAText">12.500</p>
+          <p className="CTAText">{product.cost}</p>
         </div>
       </div>
-
-      
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-      <div className="productContainer">
-        <div className="productCard">
-          <div className="imgContainer">
-            <img
-              className="productImage"
-              src="/nikon.png"
-              alt="product image"
-            />
-          </div>
-          <div className="productDetail">
-            <h3 className="productName">Sony PS4</h3>
-            <p className="productType">GAMING</p>
-          </div>
-        </div>
-        <div className="productCTA">
-          <p className="CTAText">You need</p>
-          <img
-            className="aeroPayIcon"
-            src="/icons/aeropay-4.svg"
-            alt="aero pay icon"
-          />
-          <p className="CTAText">12.500</p>
-        </div>
-      </div>
-
-
+      ))}
     </StyledProduct>
   );
 }

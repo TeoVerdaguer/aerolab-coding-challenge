@@ -324,7 +324,7 @@ const StyledProducts = styled.div`
 const authToken =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk";
 
-export default function Products({ productsSection }) {
+export default function Products({ productsSection, userPoints, setUserPoints }) {
   // States
   const [isLoading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -375,10 +375,6 @@ export default function Products({ productsSection }) {
   }, [currentPage, productsList]);
 
 
-  useEffect(() => {
-    console.log('entro al useEffect');
-  }, [productsList])
-
   // Pager logic
   function paginate(n) {
     if ( pagesNumber.includes(n) ) {
@@ -424,8 +420,6 @@ export default function Products({ productsSection }) {
 
     switch (condition) {
       case 'recent': 
-        console.log('recent');
-        // setProductsList();
         break;
       case 'lowest':
         sortedProducts = productsList.sort(function (a, b) { return a.cost - b.cost});
@@ -531,7 +525,7 @@ export default function Products({ productsSection }) {
         </div>
       </div>
       <div className="productsGrid">
-        { currentProducts.length > 0 ? <Product currentProducts={currentProducts}/> : null}
+        { currentProducts.length > 0 ? <Product currentProducts={currentProducts} userPoints={userPoints} setUserPoints={setUserPoints}/> : null}
       </div>
       <div className="numberProductsAndPager">
         <div className="emptyDiv"></div>

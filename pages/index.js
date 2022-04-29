@@ -4,7 +4,7 @@ import Nav from "./nav";
 import Walkthrough from "./walkthrough";
 import Products from "./products";
 import Footer from "./footer";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const StyledHome = styled.div`
   padding-top: 201px;
@@ -73,18 +73,20 @@ const StyledHome = styled.div`
   }
 `;
 
-
 export default function Home() {
 
-const productsSection = useRef(null);
+  const [userPoints, setUserPoints] = useState("");
+  const productsSection = useRef(null);
 
-function scrollToProducts () {
-  window.scrollTo({top: productsSection.current.offsetTop, behavior: "smooth"})
-}
+  function scrollToProducts() {
+    window.scrollTo({
+      top: productsSection.current.offsetTop,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <StyledHome>
-      <Nav />
       <Head>
         <title>Aerolab coding challenge</title>
         <meta
@@ -101,6 +103,7 @@ function scrollToProducts () {
         ></link>
       </Head>
 
+      <Nav userPoints={userPoints} setUserPoints={setUserPoints}/>
       <div className="wavesContainer"></div>
       <div className="mainContainer">
         <div className="illustrationBg">
@@ -126,7 +129,7 @@ function scrollToProducts () {
       </div>
 
       <Walkthrough />
-      <Products productsSection={productsSection}/>
+      <Products productsSection={productsSection} userPoints={userPoints} setUserPoints={setUserPoints}/>
       <Footer />
     </StyledHome>
   );

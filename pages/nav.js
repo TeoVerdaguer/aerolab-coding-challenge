@@ -23,7 +23,7 @@ const AeropayModule = styled.div`
   position: absolute;
   width: 312px;
   height: 404px;
-  right: 228px;
+  right: 11%;
   top: 96px;
   background: var(--neutrals0);
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
@@ -282,7 +282,20 @@ const AeropayModule = styled.div`
 
 const authToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk';
 
-export default function Nav() {
+export default function Nav({ userPoints, setUserPoints }) {
+
+  // States
+  const [userName, setUserName] = useState("");
+  const [cardDate, setCardDate] = useState("");
+  const [showAeroPay, setShowAeroPay] = useState(false);
+  const [points, setPoints] = useState(0);
+
+   // Effects
+   useEffect(() => {
+    getUserPoints();
+  }, []);
+
+  // Constants
   const url = "https://coding-challenge-api.aerolab.co/user/me";
   const config = {
     headers: {
@@ -291,13 +304,12 @@ export default function Nav() {
       Authorization: authToken,
     },
   };
-  // GET user data from API
-  
-  useEffect(() => {
+
+  // Get user points from API call
+  function getUserPoints() {
     axios
       .get(url, config)
       .then((data) => {
-        // console.log(data.data);
         setUserName(data.data.name);
         setUserPoints(data.data.points);
         setCardDate(getDate(data.data.createDate));
@@ -305,15 +317,13 @@ export default function Nav() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }
 
-  // ______________________________________________
-
+  // Add points to the user
   function addPoints(points) {
-    console.log(points);
-
+    // Set constants used for the API call
     const urlPoints = "https://coding-challenge-api.aerolab.co/user/points";
-    const data = `"amount": ${points}`;
+    const body = { amount: points };
     const configPoints = {
       headers: {
         'Content-Type': 'application/json',
@@ -324,22 +334,17 @@ export default function Nav() {
     };
     // POST user points
     axios
-      .post(urlPoints, data, configPoints)
+      .post(urlPoints, JSON.stringify(body), configPoints)
       .then((status) => {
         console.log(status);
+        setUserPoints(getUserPoints());
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  // States
-  const [userName, setUserName] = useState("");
-  const [userPoints, setUserPoints] = useState("");
-  const [cardDate, setCardDate] = useState("");
-  const [showAeroPay, setShowAeroPay] = useState(false);
-  const [points, setPoints] = useState(0);
-
+  // Format date as: mm/yy
   function getDate(date) {
     let splittedDate = date.split("-");
     let year = splittedDate[0].slice(-2);
@@ -347,6 +352,8 @@ export default function Nav() {
     let newDate = year + "/" + month;
     return newDate;
   }
+
+
   return (
     <div>
       <StyledNav>

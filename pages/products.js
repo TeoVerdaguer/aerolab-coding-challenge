@@ -6,7 +6,6 @@ import axios from "axios";
 const StyledProducts = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   margin: 228px;
 
   height: 2598px;
@@ -85,7 +84,6 @@ const StyledProducts = styled.div`
           }
           p {
             position: static;
-            width: 113px;
             height: 27px;
             left: 24px;
             top: 16px;
@@ -212,10 +210,13 @@ const StyledProducts = styled.div`
             background-clip: text;
             margin: 0px 10px;
           }
-        }
+          &.activeFilter {
+            background: var(--brandDefault);
+            p {
+              -webkit-text-fill-color: var(--neutrals0);
+            }
       }
-      .activeFilter {
-        background: var(--brandDefault);
+        }
       }
     }
   }
@@ -331,8 +332,9 @@ export default function Products({ productsSection }) {
   const [productsList, setProductsList] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentProducts, setCurrentProducts] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState('All Products');
 
-  // GET products from API
+  // Constants for the API call
   const getProductsUrl = "https://coding-challenge-api.aerolab.co/products";
   const config = {
     headers: {
@@ -342,6 +344,15 @@ export default function Products({ productsSection }) {
     },
   };
 
+  // Start variables
+  let lastPage = 0;
+  let productsPerPage = 0;
+  let totalProducts = 0;
+  let pagesNumber = [];
+  let indexOfLastProduct;
+  let indexOfFirstProduct;
+
+  // GET products from API
   useEffect(() => {
     axios
       .get(getProductsUrl, config)
@@ -354,24 +365,22 @@ export default function Products({ productsSection }) {
       });
   }, []);
 
+  // Set currentProducts
   useEffect(() => {
     if (productsList) {
       indexOfLastProduct = currentPage * productsPerPage;
       indexOfFirstProduct = indexOfLastProduct - productsPerPage;
       setCurrentProducts(productsList.slice(indexOfFirstProduct, indexOfLastProduct));
     }
-  }, [currentPage])
+  }, [currentPage, productsList]);
 
-  let lastPage = 0;
-  let productsPerPage = 0;
-  let totalProducts = 0;
-  let pagesNumber = [];
-  let indexOfLastProduct;
-  let indexOfFirstProduct;
+
+  useEffect(() => {
+    console.log('entro al useEffect');
+  }, [productsList])
 
   // Pager logic
   function paginate(n) {
-
     if ( pagesNumber.includes(n) ) {
       setCurrentPage(n);
     }
@@ -395,6 +404,40 @@ export default function Products({ productsSection }) {
     lastPage = pagesNumber[1];
   }
 
+
+  function filterBy(filter) {
+    // create a copy of productsList
+    let products = productsList.slice(indexOfFirstProduct, indexOfLastProduct);
+    // filter the products
+    let filteredProducts = products.filter((product) => product.category === filter);
+    setCurrentProducts(filteredProducts);
+    setCurrentPage(1);
+    // Set the filter selected to show in the button
+    setCurrentFilter(filter);
+    // Hide the dropdown
+    setShowDropdown(!showDropdown);
+  }
+
+  function sortBy(condition) {
+    let sortedProducts;
+    setActiveFilter(!activeFilter);
+
+    switch (condition) {
+      case 'recent': 
+        console.log('recent');
+        // setProductsList();
+        break;
+      case 'lowest':
+        sortedProducts = productsList.sort(function (a, b) { return a.cost - b.cost});
+        setProductsList(sortedProducts);
+        break;
+      case 'highest':
+        sortedProducts = productsList.sort(function (a, b) { return b.cost - a.cost});
+        setProductsList(sortedProducts);
+        break;
+    }
+  }
+
   // Show loading message
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -412,7 +455,7 @@ export default function Products({ productsSection }) {
                 className="filterBtn"
                 onClick={() => setShowDropdown(!showDropdown)}
               >
-                <p>All Products</p>
+                <p>{currentFilter}</p>
                 <img
                   className="arrowIcon"
                   src="/icons/arrow-icon.svg"
@@ -422,19 +465,19 @@ export default function Products({ productsSection }) {
               <div
                 className={`filtersDropdown ${showDropdown ? "" : "hidden"}`}
               >
-                <div className="filterOption">
+                <div className="filterOption" onClick={() => filterBy('All')}>
                   <p>All Products</p>
                 </div>
-                <div className="filterOption">
+                <div className="filterOption" onClick={() => filterBy('Gaming')}>
                   <p>Gaming</p>
                 </div>
-                <div className="filterOption">
+                <div className="filterOption" onClick={() => filterBy('Audio')}>
                   <p>Audio</p>
                 </div>
-                <div className="filterOption">
+                <div className="filterOption" onClick={() => filterBy('Smart Home')}>
                   <p>Smart Home</p>
                 </div>
-                <div className="filterOption">
+                <div className="filterOption" onClick={() => filterBy('Monitors & TV')}>
                   <p>Monitors & TV</p>
                 </div>
               </div>
@@ -447,17 +490,19 @@ export default function Products({ productsSection }) {
               <div className="sortRow">
                 <div
                   className={`sortBtn ${activeFilter ? "activeFilter" : ""}`}
-                  onClick={() => setActiveFilter(!activeFilter)}
+                  onClick={() => sortBy('recent')}
                 >
                   <p>Most Recent</p>
                 </div>
                 <div
                   className={`sortBtn ${activeFilter ? "activeFilter" : ""}`}
+                  onClick={() => sortBy('lowest')}
                 >
                   <p>Lowest Price</p>
                 </div>
                 <div
                   className={`sortBtn ${activeFilter ? "activeFilter" : ""}`}
+                  onClick={() => sortBy('highest')}
                 >
                   <p>Highest Price</p>
                 </div>

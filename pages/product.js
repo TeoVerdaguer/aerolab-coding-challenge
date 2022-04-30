@@ -257,6 +257,26 @@ export default function Product({
     }
   }, [showSuccessToast])
   
+  function showToast(name) {
+    setShowSuccessToast(true);
+    setTimeout( () => {
+      setShowSuccessToast(false);
+    }, 4000)
+    return (
+      <SuccessToast className={ showSuccessToast ? 'showToast' : ''}>
+        <div className="iconAndText">
+          <img
+            src="/icons/system-success.svg"
+            alt="green check icon"
+            className="icon"
+          />
+          <p>Product redeemed successfully</p>
+        </div>
+        <img className="crossIcon" src="/icons/cross-default.svg" alt="cross icon"  onClick={() => setShowSuccessToast(false)}/>
+      </SuccessToast>
+    );
+  }
+
   useEffect(() => {
     if (showFailedToast) {
       setTimeout( () => {
@@ -303,14 +323,14 @@ export default function Product({
   }
 
   // Redeem product API call
-  function redeem(prodId) {
+  function redeem(prodId, prodName) {
     let body = { productId: prodId };
     axios
       .post(redeemProductUrl, JSON.stringify(body), config)
       .then((status) => {
         console.log(status);
         getUserPoints();
-        setShowSuccessToast(true);
+        showToast(prodName);
       })
       .catch((err) => {
         console.log(err);
@@ -322,7 +342,7 @@ export default function Product({
   function checkPrice(prod) {
     if (prod.cost <= userPoints) {
       return (
-        <div className="productCTAEnabled" onClick={() => redeem(prod._id)}>
+        <div className="productCTAEnabled" onClick={() => redeem(prod._id, prod.name)}>
           <p className="CTAText">Redeem for</p>
           <img
             className="aeroPayIcon"
@@ -370,17 +390,7 @@ export default function Product({
           ))
         : null}
 
-      <SuccessToast className={ showSuccessToast ? 'showToast' : ''}>
-        <div className="iconAndText">
-          <img
-            src="/icons/system-success.svg"
-            alt="green check icon"
-            className="icon"
-          />
-          <p>Product redeemed successfully</p>
-        </div>
-        <img className="crossIcon" src="/icons/cross-default.svg" alt="cross icon"  onClick={() => setShowSuccessToast(false)}/>
-      </SuccessToast>
+      {showSuccessToast ? showToast() : null}
 
       <FailedToast className={ showFailedToast ? 'showToast' : ''}>
         <div className="iconAndText">

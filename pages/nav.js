@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const StyledNav = styled.div`
@@ -202,7 +202,7 @@ const AeropayModule = styled.div`
           padding: 4px 16px;
           width: 85.33px;
           height: 35px;
-          background: #e6f0ff;
+          background: var(--brandLight);
           border-radius: 12px;
           flex-grow: 1;
           z-index: 3;
@@ -213,19 +213,42 @@ const AeropayModule = styled.div`
             cursor: pointer;
             box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
           }
+          .selectorsText {
+            /* Desktop/Text/L1/Default| */
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 150%;
+            background: var(--brandDefault);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0px 10px;
+          }
         }
-        .selectorsText {
-          /* Desktop/Text/L1/Default| */
-          font-family: "Montserrat";
-          font-style: normal;
-          font-weight: 600;
-          font-size: 18px;
-          line-height: 150%;
+        .activeSelector {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          padding: 4px 16px;
+          width: 85.33px;
+          height: 35px;
           background: var(--brandDefault);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          margin: 0px 10px;
+          border-radius: 12px;
+          flex-grow: 1;
+          z-index: 3;
+          p.selectorsText {
+            /* Desktop/Text/L1/Default| */
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 150%;
+            color: var(--neutrals0);
+            margin: 0px 10px;
+          }
         }
       }
     }
@@ -280,18 +303,22 @@ const AeropayModule = styled.div`
   }
 `;
 
-const authToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk';
+const authToken =
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk";
 
 export default function Nav({ userPoints, setUserPoints }) {
-
   // States
   const [userName, setUserName] = useState("");
   const [cardDate, setCardDate] = useState("");
   const [showAeroPay, setShowAeroPay] = useState(false);
   const [points, setPoints] = useState(0);
 
-   // Effects
-   useEffect(() => {
+  const selector1000 = useRef(null);
+  const selector5000 = useRef(null);
+  const selector7500 = useRef(null);
+
+  // Effects
+  useEffect(() => {
     getUserPoints();
   }, []);
 
@@ -319,6 +346,29 @@ export default function Nav({ userPoints, setUserPoints }) {
       });
   }
 
+  function setSelectedPoints(points) {
+    switch (points) {
+      case 1000:
+        setPoints(1000);
+        selector1000.current.className = "activeSelector";
+        selector5000.current.className = "selectors";
+        selector7500.current.className = "selectors";
+        break;
+      case 5000:
+        setPoints(5000);
+        selector5000.current.className = "activeSelector";
+        selector1000.current.className = "selectors";
+        selector7500.current.className = "selectors";
+        break;
+      case 7500:
+        setPoints(7500);
+        selector7500.current.className = "activeSelector";
+        selector1000.current.className = "selectors";
+        selector5000.current.className = "selectors";
+        break;
+    }
+  }
+
   // Add points to the user
   function addPoints(points) {
     // Set constants used for the API call
@@ -326,12 +376,13 @@ export default function Nav({ userPoints, setUserPoints }) {
     const body = { amount: points };
     const configPoints = {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
         Authorization: authToken,
-        'Access-Control-Allow-Origin': '*',
-      }
+        "Access-Control-Allow-Origin": "*",
+      },
     };
+
     // POST user points
     axios
       .post(urlPoints, JSON.stringify(body), configPoints)
@@ -352,7 +403,6 @@ export default function Nav({ userPoints, setUserPoints }) {
     let newDate = year + "/" + month;
     return newDate;
   }
-
 
   return (
     <div>
@@ -409,13 +459,25 @@ export default function Nav({ userPoints, setUserPoints }) {
             {/* Amounts and CTA */}
             <div className="amountAndCTA">
               <div className="amounts">
-                <div className="selectors" onClick={() => setPoints(1000)}>
+                <div
+                  className="selectors"
+                  ref={selector1000}
+                  onClick={() => setSelectedPoints(1000)}
+                >
                   <p className="selectorsText">1000</p>
                 </div>
-                <div className="selectors" onClick={() => setPoints(5000)}>
+                <div
+                  className="selectors"
+                  ref={selector5000}
+                  onClick={() => setSelectedPoints(5000)}
+                >
                   <p className="selectorsText">5000</p>
                 </div>
-                <div className="selectors" onClick={() => setPoints(7500)}>
+                <div
+                  className="selectors"
+                  ref={selector7500}
+                  onClick={() => setSelectedPoints(7500)}
+                >
                   <p className="selectorsText">7500</p>
                 </div>
               </div>

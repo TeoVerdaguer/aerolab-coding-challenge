@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Product from "./product";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const StyledProducts = styled.div`
@@ -189,7 +189,7 @@ const StyledProducts = styled.div`
           align-items: center;
           width: 173px;
           height: 43px;
-          background: #e6f0ff;
+          background: var(--brandLight);
           border-radius: 12px;
           margin: 0px 5px;
           &:hover {
@@ -210,12 +210,28 @@ const StyledProducts = styled.div`
             background-clip: text;
             margin: 0px 10px;
           }
-          &.activeFilter {
-            background: var(--brandDefault);
-            p {
-              -webkit-text-fill-color: var(--neutrals0);
-            }
-      }
+        }
+        .sortBtnActive {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          width: 173px;
+          height: 43px;
+          background: var(--brandDefault);
+          border-radius: 12px;
+          margin: 0px 5px;
+          p {
+            height: 27px;
+            /* Desktop/Text/L1/Default| */
+            font-family: "Montserrat";
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 150%;
+            color: var(--neutrals0);
+            margin: 0px 10px;
+          }
         }
       }
     }
@@ -352,6 +368,11 @@ export default function Products({ productsSection, userPoints, setUserPoints })
   let indexOfLastProduct;
   let indexOfFirstProduct;
 
+  // Refs
+  const sortBtnRecent = useRef(null);
+  const sortBtnLowest = useRef(null);
+  const sortBtnHighest = useRef(null);
+
   // GET products from API
   useEffect(() => {
     axios
@@ -420,12 +441,21 @@ export default function Products({ productsSection, userPoints, setUserPoints })
 
     switch (condition) {
       case 'recent': 
+        sortBtnRecent.current.className = 'sortBtnActive';
+        sortBtnLowest.current.className = 'sortBtn';
+        sortBtnHighest.current.className = 'sortBtn';
         break;
       case 'lowest':
+        sortBtnLowest.current.className = 'sortBtnActive';
+        sortBtnRecent.current.className = 'sortBtn';
+        sortBtnHighest.current.className = 'sortBtn';
         sortedProducts = productsList.sort(function (a, b) { return a.cost - b.cost});
         setProductsList(sortedProducts);
         break;
       case 'highest':
+        sortBtnHighest.current.className = 'sortBtnActive';
+        sortBtnRecent.current.className = 'sortBtn';
+        sortBtnLowest.current.className = 'sortBtn';
         sortedProducts = productsList.sort(function (a, b) { return b.cost - a.cost});
         setProductsList(sortedProducts);
         break;
@@ -483,19 +513,22 @@ export default function Products({ productsSection, userPoints, setUserPoints })
               <p className="sorterText">Sort by:</p>
               <div className="sortRow">
                 <div
-                  className={`sortBtn ${activeFilter ? "activeFilter" : ""}`}
+                  className="sortBtn"
+                  ref={sortBtnRecent}
                   onClick={() => sortBy('recent')}
                 >
                   <p>Most Recent</p>
                 </div>
                 <div
-                  className={`sortBtn ${activeFilter ? "activeFilter" : ""}`}
+                  className="sortBtn"
+                  ref={sortBtnLowest}
                   onClick={() => sortBy('lowest')}
                 >
                   <p>Lowest Price</p>
                 </div>
                 <div
-                  className={`sortBtn ${activeFilter ? "activeFilter" : ""}`}
+                  className="sortBtn"
+                  ref={sortBtnHighest}
                   onClick={() => sortBy('highest')}
                 >
                   <p>Highest Price</p>

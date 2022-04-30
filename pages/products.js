@@ -26,11 +26,18 @@ const StyledProducts = styled.div`
     align-self: stretch;
     flex-grow: 0;
   }
-  .titleL2 {
-    background: var(--brandDefault);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .titleContainer {
+    display: flex;
+    .tech {
+      background: var(--brandDefault);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .products {
+      margin: 0 20px;
+      color: var(--neutrals900);
+    }
   }
   .filterAndSort {
     display: flex;
@@ -300,6 +307,7 @@ const StyledProducts = styled.div`
       }
     }
     .pagerText {
+      display: flex;
       height: 27px;
       /* Desktop/Text/L1/Default| */
       font-family: "Montserrat";
@@ -307,8 +315,15 @@ const StyledProducts = styled.div`
       font-weight: 600;
       font-size: 18px;
       line-height: 150%;
-      color: var(--neutrals600);
       margin: 0px 20px;
+      color: var(--neutrals600);
+      .pageNumbers {
+        background: var(--brandDefault);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-left: 5px;
+      }
     }
     .pagerArrowNextBtn {
       display: flex;
@@ -340,7 +355,11 @@ const StyledProducts = styled.div`
 const authToken =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk";
 
-export default function Products({ productsSection, userPoints, setUserPoints }) {
+export default function Products({
+  productsSection,
+  userPoints,
+  setUserPoints,
+}) {
   // States
   const [isLoading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -348,7 +367,7 @@ export default function Products({ productsSection, userPoints, setUserPoints })
   const [productsList, setProductsList] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentProducts, setCurrentProducts] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState('All Products');
+  const [currentFilter, setCurrentFilter] = useState("All Products");
 
   // Constants for the API call
   const getProductsUrl = "https://coding-challenge-api.aerolab.co/products";
@@ -391,14 +410,15 @@ export default function Products({ productsSection, userPoints, setUserPoints })
     if (productsList) {
       indexOfLastProduct = currentPage * productsPerPage;
       indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-      setCurrentProducts(productsList.slice(indexOfFirstProduct, indexOfLastProduct));
+      setCurrentProducts(
+        productsList.slice(indexOfFirstProduct, indexOfLastProduct)
+      );
     }
   }, [currentPage, productsList]);
 
-
   // Pager logic
   function paginate(n) {
-    if ( pagesNumber.includes(n) ) {
+    if (pagesNumber.includes(n)) {
       setCurrentPage(n);
     }
   }
@@ -411,7 +431,9 @@ export default function Products({ productsSection, userPoints, setUserPoints })
     indexOfLastProduct = currentPage * productsPerPage;
     indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     if (currentProducts.length === 0) {
-      setCurrentProducts(productsList.slice(indexOfFirstProduct, indexOfLastProduct));
+      setCurrentProducts(
+        productsList.slice(indexOfFirstProduct, indexOfLastProduct)
+      );
     }
 
     // Set number of pages
@@ -421,12 +443,13 @@ export default function Products({ productsSection, userPoints, setUserPoints })
     lastPage = pagesNumber[1];
   }
 
-
   function filterBy(filter) {
     // create a copy of productsList
     let products = productsList.slice(indexOfFirstProduct, indexOfLastProduct);
     // filter the products
-    let filteredProducts = products.filter((product) => product.category === filter);
+    let filteredProducts = products.filter(
+      (product) => product.category === filter
+    );
     setCurrentProducts(filteredProducts);
     setCurrentPage(1);
     // Set the filter selected to show in the button
@@ -440,23 +463,27 @@ export default function Products({ productsSection, userPoints, setUserPoints })
     setActiveFilter(!activeFilter);
 
     switch (condition) {
-      case 'recent': 
-        sortBtnRecent.current.className = 'sortBtnActive';
-        sortBtnLowest.current.className = 'sortBtn';
-        sortBtnHighest.current.className = 'sortBtn';
+      case "recent":
+        sortBtnRecent.current.className = "sortBtnActive";
+        sortBtnLowest.current.className = "sortBtn";
+        sortBtnHighest.current.className = "sortBtn";
         break;
-      case 'lowest':
-        sortBtnLowest.current.className = 'sortBtnActive';
-        sortBtnRecent.current.className = 'sortBtn';
-        sortBtnHighest.current.className = 'sortBtn';
-        sortedProducts = productsList.sort(function (a, b) { return a.cost - b.cost});
+      case "lowest":
+        sortBtnLowest.current.className = "sortBtnActive";
+        sortBtnRecent.current.className = "sortBtn";
+        sortBtnHighest.current.className = "sortBtn";
+        sortedProducts = productsList.sort(function (a, b) {
+          return a.cost - b.cost;
+        });
         setProductsList(sortedProducts);
         break;
-      case 'highest':
-        sortBtnHighest.current.className = 'sortBtnActive';
-        sortBtnRecent.current.className = 'sortBtn';
-        sortBtnLowest.current.className = 'sortBtn';
-        sortedProducts = productsList.sort(function (a, b) { return b.cost - a.cost});
+      case "highest":
+        sortBtnHighest.current.className = "sortBtnActive";
+        sortBtnRecent.current.className = "sortBtn";
+        sortBtnLowest.current.className = "sortBtn";
+        sortedProducts = productsList.sort(function (a, b) {
+          return b.cost - a.cost;
+        });
         setProductsList(sortedProducts);
         break;
     }
@@ -467,10 +494,12 @@ export default function Products({ productsSection, userPoints, setUserPoints })
     return <div className="App">Loading...</div>;
   }
   return (
-    
     <StyledProducts>
       <div className="titleAndControls" ref={productsSection}>
-        <h2 className="titleL2">tech products</h2>
+        <div className="titleContainer">
+          <h2 className="titleL2 tech">tech</h2>
+          <h2 className="titleL2 products">products</h2>
+        </div>
         <div className="filterAndSort">
           <div className="frame228">
             <div className="filter">
@@ -489,19 +518,28 @@ export default function Products({ productsSection, userPoints, setUserPoints })
               <div
                 className={`filtersDropdown ${showDropdown ? "" : "hidden"}`}
               >
-                <div className="filterOption" onClick={() => filterBy('All')}>
+                <div className="filterOption" onClick={() => filterBy("All")}>
                   <p>All Products</p>
                 </div>
-                <div className="filterOption" onClick={() => filterBy('Gaming')}>
+                <div
+                  className="filterOption"
+                  onClick={() => filterBy("Gaming")}
+                >
                   <p>Gaming</p>
                 </div>
-                <div className="filterOption" onClick={() => filterBy('Audio')}>
+                <div className="filterOption" onClick={() => filterBy("Audio")}>
                   <p>Audio</p>
                 </div>
-                <div className="filterOption" onClick={() => filterBy('Smart Home')}>
+                <div
+                  className="filterOption"
+                  onClick={() => filterBy("Smart Home")}
+                >
                   <p>Smart Home</p>
                 </div>
-                <div className="filterOption" onClick={() => filterBy('Monitors & TV')}>
+                <div
+                  className="filterOption"
+                  onClick={() => filterBy("Monitors & TV")}
+                >
                   <p>Monitors & TV</p>
                 </div>
               </div>
@@ -515,21 +553,21 @@ export default function Products({ productsSection, userPoints, setUserPoints })
                 <div
                   className="sortBtn"
                   ref={sortBtnRecent}
-                  onClick={() => sortBy('recent')}
+                  onClick={() => sortBy("recent")}
                 >
                   <p>Most Recent</p>
                 </div>
                 <div
                   className="sortBtn"
                   ref={sortBtnLowest}
-                  onClick={() => sortBy('lowest')}
+                  onClick={() => sortBy("lowest")}
                 >
                   <p>Lowest Price</p>
                 </div>
                 <div
                   className="sortBtn"
                   ref={sortBtnHighest}
-                  onClick={() => sortBy('highest')}
+                  onClick={() => sortBy("highest")}
                 >
                   <p>Highest Price</p>
                 </div>
@@ -537,7 +575,11 @@ export default function Products({ productsSection, userPoints, setUserPoints })
             </div>
           </div>
           <div className="pager">
-            <div className={`pagerArrowPrevBtn ${currentPage === 1 ? 'inactive' : ''}`}>
+            <div
+              className={`pagerArrowPrevBtn ${
+                currentPage === 1 ? "inactive" : ""
+              }`}
+            >
               <img
                 className="pagerArrowPrev"
                 src="/icons/chevron-default.svg"
@@ -545,8 +587,15 @@ export default function Products({ productsSection, userPoints, setUserPoints })
                 onClick={() => paginate(currentPage - 1)}
               />
             </div>
-            <p className="pagerText">{`Page ${currentPage} of ${lastPage}`}</p>
-            <div className={`pagerArrowNextBtn ${currentPage === lastPage ? 'inactive' : ''}`}>
+            <p className="pagerText">
+              Page
+              <p className="pageNumbers">{`${currentPage} of ${lastPage}`}</p>
+            </p>
+            <div
+              className={`pagerArrowNextBtn ${
+                currentPage === lastPage ? "inactive" : ""
+              }`}
+            >
               <img
                 className="pagerArrowNext"
                 src="/icons/chevron-default.svg"
@@ -558,14 +607,24 @@ export default function Products({ productsSection, userPoints, setUserPoints })
         </div>
       </div>
       <div className="productsGrid">
-        { currentProducts.length > 0 ? <Product currentProducts={currentProducts} userPoints={userPoints} setUserPoints={setUserPoints}/> : null}
+        {currentProducts.length > 0 ? (
+          <Product
+            currentProducts={currentProducts}
+            userPoints={userPoints}
+            setUserPoints={setUserPoints}
+          />
+        ) : null}
       </div>
       <div className="numberProductsAndPager">
         <div className="emptyDiv"></div>
         <p className="numberOfProducts">{`${productsPerPage} of ${totalProducts} products`}</p>
         {/* Pager */}
         <div className="pager">
-          <div className={`pagerArrowPrevBtn ${currentPage === 1 ? 'inactive' : ''}`}>
+          <div
+            className={`pagerArrowPrevBtn ${
+              currentPage === 1 ? "inactive" : ""
+            }`}
+          >
             <img
               className="pagerArrowPrev"
               src="/icons/chevron-default.svg"
@@ -573,8 +632,15 @@ export default function Products({ productsSection, userPoints, setUserPoints })
               onClick={() => paginate(currentPage - 1)}
             />
           </div>
-          <p className="pagerText">{`Page ${currentPage} of ${lastPage}`}</p>
-          <div className={`pagerArrowNextBtn ${currentPage === lastPage ? 'inactive' : ''}`}>
+          <p className="pagerText">
+            Page
+            <p className="pageNumbers">{`${currentPage} of ${lastPage}`}</p>
+          </p>
+          <div
+            className={`pagerArrowNextBtn ${
+              currentPage === lastPage ? "inactive" : ""
+            }`}
+          >
             <img
               className="pagerArrowNext"
               src="/icons/chevron-default.svg"

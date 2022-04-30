@@ -58,11 +58,14 @@ const StyledHome = styled.div`
       font-size: 16px;
       color: var(--neutrals600);
     }
-    .titleL1 {
+    .tech {
       background: var(--brandDefault);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+    }
+    .zone {
+      color: var(--neutrals900);
     }
     .textL1Default {
       margin-top: 24px;
@@ -74,7 +77,6 @@ const StyledHome = styled.div`
 `;
 
 export default function Home() {
-
   const [userPoints, setUserPoints] = useState("");
   const productsSection = useRef(null);
 
@@ -103,7 +105,7 @@ export default function Home() {
         ></link>
       </Head>
 
-      <Nav userPoints={userPoints} setUserPoints={setUserPoints}/>
+      <Nav userPoints={userPoints} setUserPoints={setUserPoints} />
       <div className="wavesContainer"></div>
       <div className="mainContainer">
         <div className="illustrationBg">
@@ -116,7 +118,8 @@ export default function Home() {
 
         <div className="landingCopyContainer">
           <p className="textL1AllCaps">explore the</p>
-          <h1 className="titleL1">tech zone</h1>
+          <h1 className="titleL1 tech">tech</h1>
+          <h1 className="titleL1 zone">zone</h1>
           <p className="textL1Default">
             Here you’ll be able to exchange all of your hard-earned Aeropoints
             and exchange them for cool tech.
@@ -129,7 +132,11 @@ export default function Home() {
       </div>
 
       <Walkthrough />
-      <Products productsSection={productsSection} userPoints={userPoints} setUserPoints={setUserPoints}/>
+      <Products
+        productsSection={productsSection}
+        userPoints={userPoints}
+        setUserPoints={setUserPoints}
+      />
       <Footer />
     </StyledHome>
   );

@@ -1,32 +1,36 @@
 import styled from "styled-components";
 
 const StyledWalkthrough = styled.div`
+  position: absolute;
+  height: 721px;
+  left: 0px;
+  right: 0px;
+  top: 952px;
   .cardsBG {
     position: absolute;
     height: 528px;
     width: 100%;
-    top: 1070px;
+    top: 118px;
     background: var(--sectionBg);
     display: flex;
     justify-content: center;
   }
   .cardsContainer {
     position: absolute;
-    top: 952px;
     display: flex;
     justify-content: center;
+    height: 700px;
+    width: 100%;
     #card1 {
+      position: relative;
       transform: rotate(-3deg);
-      left: 228px;
       top: 30px;
+      left: 0px;
+      margin-right: 400px;
     }
-
-    #card2 {
-      left: 694.32px;
-    }
-
     #card3 {
-      left: 1125px;
+      position: relative;
+      left: 10px;
       top: 30px;
       transform: rotate(3deg);
       z-index: 2;

@@ -243,7 +243,6 @@ export default function Product({
   userPoints,
   setUserPoints,
 }) {
-
   // States
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailedToast, setShowFailedToast] = useState(false);
@@ -251,44 +250,23 @@ export default function Product({
   // Effects
   useEffect(() => {
     if (showSuccessToast) {
-      setTimeout( () => {
+      setTimeout(() => {
         setShowSuccessToast(false);
-      }, 4000)
+      }, 4000);
     }
-  }, [showSuccessToast])
-  
-  function showToast(name) {
-    setShowSuccessToast(true);
-    setTimeout( () => {
-      setShowSuccessToast(false);
-    }, 4000)
-    return (
-      <SuccessToast className={ showSuccessToast ? 'showToast' : ''}>
-        <div className="iconAndText">
-          <img
-            src="/icons/system-success.svg"
-            alt="green check icon"
-            className="icon"
-          />
-          <p>Product redeemed successfully</p>
-        </div>
-        <img className="crossIcon" src="/icons/cross-default.svg" alt="cross icon"  onClick={() => setShowSuccessToast(false)}/>
-      </SuccessToast>
-    );
-  }
+  }, [showSuccessToast]);
 
   useEffect(() => {
     if (showFailedToast) {
-      setTimeout( () => {
+      setTimeout(() => {
         setShowFailedToast(false);
-      }, 4000)
+      }, 4000);
     }
-  }, [showFailedToast])
-
+  }, [showFailedToast]);
 
   const authToken =
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjYyMGRhN2VhZDIzNzAwMWFhMmZiYmYiLCJpYXQiOjE2NTA1OTMxOTF9.5TtSt4ijKv_SRXE7HHTilJjSbxOC9x68Ulm4Tq7fBqk";
-  
+
   // Constants for the API call to redeem products
   const redeemProductUrl = "https://coding-challenge-api.aerolab.co/redeem";
   const config = {
@@ -330,7 +308,7 @@ export default function Product({
       .then((status) => {
         console.log(status);
         getUserPoints();
-        showToast(prodName);
+        setShowSuccessToast(true);
       })
       .catch((err) => {
         console.log(err);
@@ -342,7 +320,10 @@ export default function Product({
   function checkPrice(prod) {
     if (prod.cost <= userPoints) {
       return (
-        <div className="productCTAEnabled" onClick={() => redeem(prod._id, prod.name)}>
+        <div
+          className="productCTAEnabled"
+          onClick={() => redeem(prod._id, prod.name)}
+        >
           <p className="CTAText">Redeem for</p>
           <img
             className="aeroPayIcon"
@@ -390,9 +371,24 @@ export default function Product({
           ))
         : null}
 
-      {showSuccessToast ? showToast() : null}
+      <SuccessToast className={showSuccessToast ? "showToast" : ""}>
+        <div className="iconAndText">
+          <img
+            src="/icons/system-success.svg"
+            alt="green check icon"
+            className="icon"
+          />
+          <p>Product redeemed successfully</p>
+        </div>
+        <img
+          className="crossIcon"
+          src="/icons/cross-default.svg"
+          alt="cross icon"
+          onClick={() => setShowSuccessToast(false)}
+        />
+      </SuccessToast>
 
-      <FailedToast className={ showFailedToast ? 'showToast' : ''}>
+      <FailedToast className={showFailedToast ? "showToast" : ""}>
         <div className="iconAndText">
           <img
             src="/icons/system-error.svg"
@@ -401,7 +397,12 @@ export default function Product({
           />
           <p>There was a problem with the transaction</p>
         </div>
-        <img className="crossIcon" src="/icons/cross-default.svg" alt="cross icon" onClick={() => setShowFailedToast(false)}/>
+        <img
+          className="crossIcon"
+          src="/icons/cross-default.svg"
+          alt="cross icon"
+          onClick={() => setShowFailedToast(false)}
+        />
       </FailedToast>
     </StyledProduct>
   );

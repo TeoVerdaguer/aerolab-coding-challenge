@@ -7,7 +7,6 @@ const StyledProducts = styled.div`
   display: flex;
   flex-direction: column;
   margin: 228px;
-
   height: 2598px;
   .titleAndControls {
     display: flex;
@@ -363,11 +362,11 @@ export default function Products({
   // States
   const [isLoading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [activeFilter, setActiveFilter] = useState(false);
-  const [productsList, setProductsList] = useState();
+  const [productsList, setProductsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentProducts, setCurrentProducts] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("All Products");
+
 
   // Constants for the API call
   const getProductsUrl = "https://coding-challenge-api.aerolab.co/products";
@@ -414,7 +413,7 @@ export default function Products({
         productsList.slice(indexOfFirstProduct, indexOfLastProduct)
       );
     }
-  }, [currentPage, productsList]);
+  }, [currentPage]);
 
   // Pager logic
   function paginate(n) {
@@ -444,7 +443,7 @@ export default function Products({
   }
 
   function filterBy(filter) {
-    // create a copy of productsList
+    // create a copy of currentProducts
     let products = productsList.slice(indexOfFirstProduct, indexOfLastProduct);
     // filter the products
     let filteredProducts = products.filter(
@@ -460,8 +459,8 @@ export default function Products({
 
   function sortBy(condition) {
     let sortedProducts;
-    setActiveFilter(!activeFilter);
-
+    let currentProducts;
+    
     switch (condition) {
       case "recent":
         sortBtnRecent.current.className = "sortBtnActive";
@@ -476,6 +475,9 @@ export default function Products({
           return a.cost - b.cost;
         });
         setProductsList(sortedProducts);
+        currentProducts = productsList.slice(indexOfFirstProduct, indexOfLastProduct);
+        setCurrentProducts(currentProducts);
+        setCurrentPage(1);
         break;
       case "highest":
         sortBtnHighest.current.className = "sortBtnActive";
@@ -485,6 +487,9 @@ export default function Products({
           return b.cost - a.cost;
         });
         setProductsList(sortedProducts);
+        currentProducts = productsList.slice(indexOfFirstProduct, indexOfLastProduct);
+        setCurrentProducts(currentProducts);
+        setCurrentPage(1);
         break;
     }
   }
@@ -587,10 +592,10 @@ export default function Products({
                 onClick={() => paginate(currentPage - 1)}
               />
             </div>
-            <p className="pagerText">
-              Page
+            <div className="pagerText">
+              <p>Page</p>
               <p className="pageNumbers">{`${currentPage} of ${lastPage}`}</p>
-            </p>
+            </div>
             <div
               className={`pagerArrowNextBtn ${
                 currentPage === lastPage ? "inactive" : ""
@@ -632,10 +637,10 @@ export default function Products({
               onClick={() => paginate(currentPage - 1)}
             />
           </div>
-          <p className="pagerText">
-            Page
+          <div className="pagerText">
+            <p>Page</p>
             <p className="pageNumbers">{`${currentPage} of ${lastPage}`}</p>
-          </p>
+          </div>
           <div
             className={`pagerArrowNextBtn ${
               currentPage === lastPage ? "inactive" : ""
